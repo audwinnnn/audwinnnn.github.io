@@ -117,7 +117,6 @@
         }
 
         /* Hero Content */
-
         .hero-content h1 {
             font-size: clamp(2.5rem, 8vw, 5rem);
             margin-bottom: 1rem;
@@ -255,6 +254,9 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
             cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .project-card:hover {
@@ -294,6 +296,103 @@
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.85rem;
+        }
+
+        /* Project Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: var(--secondary-color);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            animation: slideDown 0.3s;
+        }
+
+        .close {
+            color: var(--text-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--accent-color);
+        }
+
+        .modal h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .modal-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .modal-attachments {
+            margin-top: 2rem;
+        }
+
+        .modal-attachments h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .attachment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .attachment-item {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .attachment-item img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* Contact Section */
@@ -479,7 +578,7 @@
     <section id="projects" class="reveal">
         <h2>Featured Projects</h2>
         <div class="projects-grid">
-            <a href="#" class="project-card" style="text-decoration: none; color: inherit;">
+            <div class="project-card" onclick="openModal('cca')">
                 <div class="project-image">🎓</div>
                 <div class="project-content">
                     <h3>CCA Portal</h3>
@@ -489,8 +588,8 @@
                         <span class="tag">CSS</span>
                     </div>
                 </div>
-            </a>
-            <a href="#" class="project-card" style="text-decoration: none; color: inherit;">
+            </div>
+            <div class="project-card" onclick="openModal('whatsapp')">
                 <div class="project-image" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);">💬</div>
                 <div class="project-content">
                     <h3>ConnectFlow - WhatsApp CRM</h3>
@@ -501,9 +600,76 @@
                         <span class="tag">HTML</span>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
     </section>
+
+    <!-- Project Modals -->
+    <div id="ccaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cca')">&times;</span>
+            <h2>CCA Portal</h2>
+            <div class="project-tags" style="margin-bottom: 2rem;">
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+            </div>
+            <div class="modal-description">
+                <p>The CCA Portal is a comprehensive web-based platform designed to revolutionize how educational institutions manage Co-Curricular Activities. This system provides an intuitive interface for students, teachers, and administrators to seamlessly track, manage, and engage with various CCAs.</p>
+                <br>
+                <p><strong>Key Features:</strong></p>
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li>Student activity enrollment and tracking</li>
+                    <li>Attendance management system</li>
+                    <li>Achievement and awards documentation</li>
+                    <li>Real-time activity schedules and updates</li>
+                    <li>Administrative dashboard for oversight</li>
+                    <li>Responsive design for mobile and desktop</li>
+                </ul>
+            </div>
+            <div class="modal-attachments">
+                <h3>Project Screenshots</h3>
+                <div class="attachment-grid">
+                    <div class="attachment-item">
+                        <p>📷 Add your screenshots here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="whatsappModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('whatsapp')">&times;</span>
+            <h2>ConnectFlow - WhatsApp CRM</h2>
+            <div class="project-tags" style="margin-bottom: 2rem;">
+                <span class="tag">Flask</span>
+                <span class="tag">Ngrok</span>
+                <span class="tag">HTML</span>
+            </div>
+            <div class="modal-description">
+                <p>ConnectFlow is an innovative Customer Relationship Management solution that leverages WhatsApp's messaging platform to create seamless communication channels between businesses and their customers. Built with Flask and utilizing Ngrok for secure tunneling, this system provides a robust backend for managing customer interactions.</p>
+                <br>
+                <p><strong>Key Features:</strong></p>
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li>WhatsApp API integration for automated messaging</li>
+                    <li>Customer conversation history and analytics</li>
+                    <li>Automated response templates and workflows</li>
+                    <li>Secure tunneling with Ngrok for webhook handling</li>
+                    <li>Real-time message tracking and notifications</li>
+                    <li>Customer segmentation and targeted messaging</li>
+                    <li>Dashboard for monitoring engagement metrics</li>
+                </ul>
+            </div>
+            <div class="modal-attachments">
+                <h3>Project Screenshots</h3>
+                <div class="attachment-grid">
+                    <div class="attachment-item">
+                        <p>📷 Add your screenshots here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Contact Section -->
     <section id="contact" class="reveal">
@@ -525,9 +691,7 @@
                 <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
             <div class="social-links">
-                <a href="mailto:audwinong@gmail.com" title="Email">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAjVBMVEX///8AAAD8/Pz5+fkEBAT19fXu7u7x8fHr6+vn5+fb29vi4uLIyMjW1ta/v7+ZmZmtra2RkZGenp5xcXGCgoJaWlq2trZlZWXPz89CQkJOTk6np6dISEg3NzeIiIhpaWkuLi4dHR17e3sjIyMXFxdVVVU8PDyysrIqKiqQkJB2dnZgYGALCwswMDBEREQEYt+vAAAIoklEQVR4nO2d6XqyOhSGIyAoOCvOolhtrfX+7+6A1ioJZIXs5Nvneb9T+9cXliEJKwlJq/XNN998880333wzYHQZ9rqXfr/fv1y6w8ul1x2Ox/+6Y03Y6G/XaZIsy3UpLZVlmabbfn/wT8vc6x+LpKhP+dWrKJL+v9qd++2nk2zzJK9JeU2eJNu/eoz7w92ubNR1eb3dDf+FZYaXMq3N9kiZlpf/uXWGk+fGbI9U+fO/tM7oXtRsNku1vI7+B/YZPzbveqRK/uJ/YJ/+5WXrHCnL/j+wz6bsuHUOyt0/sM8l+wD2OZQfwT7lR7BPp/wI9imSj2Cfzep96zTnMhmI3b/nJ7DP8gPY5wPYp/gE9inWH8E+n8A+H8A+4w9gn/In+E/09yOMMx79ewONOoOPYJ/mHmLVGe/XUx1qPR/APl/BPlPhJCPuCp1kO2Qms13hK8MlOslwqJOMhuokX8E+X8E+X8E+d+kkc+kkC+kko5Fwkrlwkol0krF0kol0kol0kom0C42km0ykm0xkEzOVTTyX/UTrJ1qJfuL5E30B+3wB+0iP+7p+ot/3E01kE02km9Tfg+oaHKr2E/0++wmtn2gqneQu+ok+gH2+gH2+gH1+6ScaCCcZSSf5X/QTPYST3KWTjKWT/L+f6C6c5C79RE/pJGPZxExpEy2km/T1E/X1E82km/iXftJVTNSdKCYaSSf5Cu4in8E9ZHPpJAvZT/T/fqKV6CdaiSbSCbfSCacfwT4f4ISCdMKtdMKtdMKpdMKldMKZdMKJdMKxdMKxdMKRdMLRv3fCkXTCiXTC0b93wql0wol0wol0wol0wol0wsm/d8KJdMKpR7DPp3fC+Ue4h0w/gn3GH8E+I+mEE+mEU+mEE+mEY+mEI+mEY+mEo3/vhCPphCPphBPphBPphBPphJNP74SfwD4fwD4fwD4fwD4f4B6y+QD2mUsnnAsn3EonnEknnEonnEonnEgnnEgnnEgnnH4C+3wC+3wC+0wl+0xkE06lE46lE46kE46kE46lE46lE86kE86kE86kE86lE86kE86kEy6kE86kEy6kEy7+vRPOhRPOpRPOpRPOpRPOpRMuhBPOpRPOpBPOpBPOpBPOpRMu/r0TLqQTLqQTLqQTzqUTzqUTLqQTLqQTLqQTLqQTLqQTLv69Ey6kEy6lEy6lE86kEy6lEy6kE66kE66lE66lE66lE65lEy5lE06lE06lE06kE46kE06kE06kE06kE06kE06kE06kE06lE06lE06lE06lEy6lE86lE87/vRPO/70TLqUTLqQTLqQTLqUTLv69Ey6lEy6lEy6lEy6lEy6lEy6lE66kEy6kEy6kEy6kE86kE86kE86kE86lE86lE86lE86lE86kE06lE06kE06lE86lE86kE86lE86lE86lE86lE86lE86lE86lEy6lEy6lE66kE66lE66lE65lE65lE25kE25kE25kE86lE86lE86kE86lE86lE86kE86lEy6lE66kE66lE66kE66lEy6lE86lE66kE66lE66lE66lE26kE25kE65lE66kE26lE26lE66lE66kE26lE26kE26lE66lE66kE66lE26kE66lE66kE66kE66lE26lE26lE26lE26lE25lE25kE26lE26kE26lE26lE26kE26kE24d2Gct++Bc9sGV7IMr2QdXsh+upB9cyX64kv1wLfvhWvbDteyHa9kP17Ifbh3Yp/MA9tkK9tkI9tmIfriW/XAr++FW9sOt7Idb2Q+3sh9uZT/cyn64lf1wJ/vhTvbDneyHW9kPt7Ifbh3YZy374Ub0w41kn43oh2vJPmvJPmvZB9eyD65lH1xL9lnJPriS7LOSfXAl2Wcl++BKss9K9sGVZJ+V7IMryT4r2QfXkg+uJB9cST64lH1wKfvgUvLBpeyDS8kHl5IPLiUfXEk+uJJ8cCX54FLywaXkg0vZB5eSD64kH1xLPriW7LOWfXAt2Wct2Wct++BKss9a9sG1ZJ+VZJ+V5IMryQdXkg+uJR9cST64knxwLfngWvLBleSDK8kHV5IPriQfXEs+uJbtspbtspZ9cC374FrywaXkg2vJB9eSD64lH1xLPriWfHAt+eBa8sG15INryQdXkg+uZB9cST64knxwLfngWvbBteSDa8kHV5IPriQfXEk+uJJ8cCX54ErywbXkg2vJB9eyD24k+2xkH9xI9tlIPriRfHAr++BW9sGN5IMbyT4byT4byQc3kg9uZR/cSj64kXxwK/ngRvbBjeSDW9kHt5IPbiQf3Eo+uJV8cCP54FbywY3kg1vJB7eSD24kH9xKPriVfHAj+eBW8sGt5IMbyQe3kg9uJR/cSD64lXxwK9lnLdlnLdlnLfngWvLBjeSDG8kHN5J91pJ9VpJ9VpJ9VrIPriT7rCQfXEk+uJJ8cCX54EqyzyPxz0F9tPsN7DORfXAi++BE9sGJ7IMTyQdPJB88kXzwVPLBU8kHTyUfPJV88FTywRPJB08kHzyVfPBU8sFTyQdPZB88lXzwVPbBU9kHTyUfPJV88FT2wVPJB08lHzyVfPBE8sETyQdPJB88kXzwRPLBE9kHTyQfPJF88ETywRPZByeyD55IPngi++BU9sFTyQdPZR88lX3wVPbBqeyDU9kHp7IPTiUfnEo+OJN9cCb74EzywZnkg1PZB6eyD84kH5zJPjiVfXAq++Bc9sG57IMzyQensg9OZR+cyT44k31wKvvgVPbBueyDc9kH57IPzmQfnMk+OJN9cCb54Ez2wZnsg3PZB+eyD85lH5zLPjiX7DPfyj44l+0yl+0yl+0yl+0yl+0yl+0yl+0yk+0yk+0yk+0yk+0yk+0yk+0yk+0yl+0yl+0yl+0yl+0yl+0yk+0yk31wLtvlItvlItvlIttlLtvlIttlLtvlIvvgXLLPXLLPXLLPXLbLXLLPXPLBueyDC9kHF7IPLmQfXMg+uJB9cCH74EL2wYXsgwvZBxeyD/4F+dbyoXjg3NgAAAAASUVORK5CYII=" alt="Email" style="width: 30px; height: 30px; filter: brightness(0) saturate(100%) invert(100%);">
-                </a>
+                <a href="mailto:audwinong@gmail.com" title="Email">✉️</a>
             </div>
         </div>
     </section>
@@ -689,6 +853,27 @@
             e.preventDefault();
             alert('Thank you for reaching out to me, I endeavour to reply as soon as possible.');
         });
+
+        // Modal functions
+        function openModal(projectType) {
+            const modal = document.getElementById(projectType + 'Modal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(projectType) {
+            const modal = document.getElementById(projectType + 'Modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
     </script>
 </body>
 </html>
