@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Name - Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -42,6 +43,14 @@
             position: absolute;
             top: 0;
             left: 0;
+        }
+
+        #globe-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         /* Navigation */
@@ -106,6 +115,8 @@
             padding: 2rem 5%;
             text-align: center;
         }
+
+        /* Hero Content */
 
         .hero-content h1 {
             font-size: clamp(2.5rem, 8vw, 5rem);
@@ -347,14 +358,6 @@
             transform: translateY(-5px);
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: var(--secondary-color);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -398,7 +401,7 @@
 <body>
     <!-- Background Animation -->
     <div class="bg-animation">
-        <canvas id="canvas"></canvas>
+        <div id="globe-container"></div>
     </div>
 
     <!-- Navigation -->
@@ -415,14 +418,14 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>Hi, I'm Audwin Ong</h1>
-            <p class="subtitle">Full Stack Developer, Creative Designer</p>
+            <h1>Hi, I'm Your Name</h1>
+            <p class="subtitle">Full Stack Developer & Creative Designer</p>
             <p class="description">
-                I build exceptional digital experiences that combine modern design 
+                I build exceptional digital experiences that combine beautiful design 
                 with powerful functionality. Let's create something amazing together.
             </p>
             <div class="cta-buttons">
-                <a href="#projects" class="btn btn-primary">View My Project</a>
+                <a href="#projects" class="btn btn-primary">View My Projects</a>
                 <a href="#contact" class="btn">Get In Touch</a>
             </div>
         </div>
@@ -476,48 +479,35 @@
     <section id="projects" class="reveal">
         <h2>Featured Projects</h2>
         <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-image">🎯</div>
+            <a href="#" class="project-card" style="text-decoration: none; color: inherit;">
+                <div class="project-image">🎓</div>
                 <div class="project-content">
-                    <h3>Project One</h3>
-                    <p>A modern web application built with React and Node.js featuring real-time updates and responsive design.</p>
+                    <h3>CCA Portal</h3>
+                    <p>A comprehensive Co-Curricular Activities management platform designed to streamline student engagement, activity tracking, and administrative oversight with an intuitive interface.</p>
                     <div class="project-tags">
-                        <span class="tag">React</span>
-                        <span class="tag">Node.js</span>
-                        <span class="tag">MongoDB</span>
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
                     </div>
                 </div>
-            </div>
-            <div class="project-card">
-                <div class="project-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🚀</div>
+            </a>
+            <a href="#" class="project-card" style="text-decoration: none; color: inherit;">
+                <div class="project-image" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);">💬</div>
                 <div class="project-content">
-                    <h3>Project Two</h3>
-                    <p>An e-commerce platform with advanced filtering, payment integration, and admin dashboard.</p>
+                    <h3>ConnectFlow - WhatsApp CRM</h3>
+                    <p>An intelligent customer relationship management system integrating WhatsApp messaging capabilities with advanced automation, analytics, and secure tunneling for seamless communication.</p>
                     <div class="project-tags">
-                        <span class="tag">Next.js</span>
-                        <span class="tag">Stripe</span>
-                        <span class="tag">PostgreSQL</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">Ngrok</span>
+                        <span class="tag">HTML</span>
                     </div>
                 </div>
-            </div>
-            <div class="project-card">
-                <div class="project-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">📊</div>
-                <div class="project-content">
-                    <h3>Project Three</h3>
-                    <p>A data visualization dashboard with interactive charts and real-time analytics.</p>
-                    <div class="project-tags">
-                        <span class="tag">D3.js</span>
-                        <span class="tag">React</span>
-                        <span class="tag">Express</span>
-                    </div>
-                </div>
-            </div>
+            </a>
         </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact" class="reveal">
-        <h2>Get In Touch</h2>
+        <h2>Contact Me</h2>
         <div class="contact-content">
             <form class="contact-form">
                 <div class="form-group">
@@ -535,93 +525,137 @@
                 <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
             <div class="social-links">
-                <a href="https://github.com/yourusername" target="_blank" title="GitHub">🔗</a>
-                <a href="https://linkedin.com/in/yourusername" target="_blank" title="LinkedIn">💼</a>
-                <a href="https://twitter.com/yourusername" target="_blank" title="Twitter">🐦</a>
+                <a href="mailto:audwinong@gmail.com" title="Email">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAjVBMVEX///8AAAD8/Pz5+fkEBAT19fXu7u7x8fHr6+vn5+fb29vi4uLIyMjW1ta/v7+ZmZmtra2RkZGenp5xcXGCgoJaWlq2trZlZWXPz89CQkJOTk6np6dISEg3NzeIiIhpaWkuLi4dHR17e3sjIyMXFxdVVVU8PDyysrIqKiqQkJB2dnZgYGALCwswMDBEREQEYt+vAAAIoklEQVR4nO2d6XqyOhSGIyAoOCvOolhtrfX+7+6A1ioJZIXs5Nvneb9T+9cXliEJKwlJq/XNN998880333wzYHQZ9rqXfr/fv1y6w8ul1x2Ox/+6Y03Y6G/XaZIsy3UpLZVlmabbfn/wT8vc6x+LpKhP+dWrKJL+v9qd++2nk2zzJK9JeU2eJNu/eoz7w92ubNR1eb3dDf+FZYaXMq3N9kiZlpf/uXWGk+fGbI9U+fO/tM7oXtRsNku1vI7+B/YZPzbveqRK/uJ/YJ/+5WXrHCnL/j+wz6bsuHUOyt0/sM8l+wD2OZQfwT7lR7BPp/wI9imSj2Cfzep96zTnMhmI3b/nJ7DP8gPY5wPYp/gE9inWH8E+n8A+H8A+4w9gn/In+E/09yOMMx79ewONOoOPYJ/mHmLVGe/XUx1qPR/APl/BPlPhJCPuCp1kO2Qms13hK8MlOslwqJOMhuokX8E+X8E+X8E+d+kkc+kkC+kko5Fwkrlwkol0krF0kol0kol0kom0C42km0ykm0xkEzOVTTyX/UTrJ1qJfuL5E30B+3wB+0iP+7p+ot/3E01kE02km9Tfg+oaHKr2E/0++wmtn2gqneQu+ok+gH2+gH2+gH1+6ScaCCcZSSf5X/QTPYST3KWTjKWT/L+f6C6c5C79RE/pJGPZxExpEy2km/T1E/X1E82km/iXftJVTNSdKCYaSSf5Cu4in8E9ZHPpJAvZT/T/fqKV6CdaiSbSCbfSCacfwT4f4ISCdMKtdMKtdMKpdMKldMKZdMKJdMKxdMKxdMKRdMLRv3fCkXTCiXTC0b93wql0wol0wol0wol0wol0wsm/d8KJdMKpR7DPp3fC+Ue4h0w/gn3GH8E+I+mEE+mEU+mEE+mEY+mEI+mEY+mEo3/vhCPphCPphBPphBPphBPphJNP74SfwD4fwD4fwD4fwD4f4B6y+QD2mUsnnAsn3EonnEknnEonnEonnEgnnEgnnEgnnH4C+3wC+3wC+0wl+0xkE06lE46lE46kE46kE46lE46lE86kE86kE86kE86lE86kE86kEy6kE86kEy6kEy7+vRPOhRPOpRPOpRPOpRPOpRMuhBPOpRPOpBPOpBPOpBPOpRMu/r0TLqQTLqQTLqQTzqUTzqUTLqQTLqQTLqQTLqQTLqQTLv69Ey6kEy6lEy6lE86kEy6lEy6kE66kE66lE66lE66lE65lEy5lE06lE06lE06kE46kE06kE06kE06kE06kE06kE06kE06lE06lE06lE06lEy6lE86lE87/vRPO/70TLqUTLqQTLqQTLqUTLv69Ey6lEy6lEy6lEy6lEy6lEy6lE66kEy6kEy6kEy6kE86kE86kE86kE86lE86lE86lE86lE86kE06lE06kE06lE86lE86kE86lE86lE86lE86lE86lE86lE86lEy6lEy6lE66kE66lE66lE65lE65lE25kE25kE25kE86lE86lE86kE86lE86lE86kE86lEy6lE66kE66lE66kE66lEy6lE86lE66kE66lE66lE66lE26kE25kE65lE66kE26lE26lE66lE66kE26lE26kE26lE66lE66kE66lE26kE66lE66kE66kE66lE26lE26lE26lE26lE25lE25kE26lE26kE26lE26lE26kE26kE24d2Gct++Bc9sGV7IMr2QdXsh+upB9cyX64kv1wLfvhWvbDteyHa9kP17Ifbh3Yp/MA9tkK9tkI9tmIfriW/XAr++FW9sOt7Idb2Q+3sh9uZT/cyn64lf1wJ/vhTvbDneyHW9kPt7Ifbh3YZy374Ub0w41kn43oh2vJPmvJPmvZB9eyD65lH1xL9lnJPriS7LOSfXAl2Wcl++BKss9K9sGVZJ+V7IMryT4r2QfXkg+uJB9cST64lH1wKfvgUvLBpeyDS8kHl5IPLiUfXEk+uJJ8cCX54FLywaXkg0vZB5eSD64kH1xLPriW7LOWfXAt2Wct2Wct++BKss9a9sG1ZJ+VZJ+V5IMryQdXkg+uJR9cST64knxwLfngWvLBleSDK8kHV5IPriQfXEs+uJbtspbtspZ9cC374FrywaXkg2vJB9eSD64lH1xLPriWfHAt+eBa8sG15INryQdXkg+uZB9cST64knxwLfngWvbBteSDa8kHV5IPriQfXEk+uJJ8cCX54ErywbXkg2vJB9eyD24k+2xkH9xI9tlIPriRfHAr++BW9sGN5IMbyT4byT4byQc3kg9uZR/cSj64kXxwK/ngRvbBjeSDW9kHt5IPbiQf3Eo+uJV8cCP54FbywY3kg1vJB7eSD24kH9xKPriVfHAj+eBW8sGt5IMbyQe3kg9uJR/cSD64lXxwK9lnLdlnLdlnLfngWvLBjeSDG8kHN5J91pJ9VpJ9VpJ9VrIPriT7rCQfXEk+uJJ8cCX54EqyzyPxz0F9tPsN7DORfXAi++BE9sGJ7IMTyQdPJB88kXzwVPLBU8kHTyUfPJV88FTywRPJB08kHzyVfPBU8sFTyQdPZB88lXzwVPbBU9kHTyUfPJV88FT2wVPJB08lHzyVfPBE8sETyQdPJB88kXzwRPLBE9kHTyQfPJF88ETywRPZByeyD55IPngi++BU9sFTyQdPZR88lX3wVPbBqeyDU9kHp7IPTiUfnEo+OJN9cCb74EzywZnkg1PZB6eyD84kH5zJPjiVfXAq++Bc9sG57IMzyQensg9OZR+cyT44k31wKvvgVPbBueyDc9kH57IPzmQfnMk+OJN9cCb54Ez2wZnsg3PZB+eyD85lH5zLPjiX7DPfyj44l+0yl+0yl+0yl+0yl+0yl+0yl+0yk+0yk+0yk+0yk+0yk+0yk+0yk+0yl+0yl+0yl+0yl+0yl+0yk+0yk31wLtvlItvlItvlIttlLtvlIttlLtvlIvvgXLLPXLLPXLLPXLbLXLLPXPLBueyDC9kHF7IPLmQfXMg+uJB9cCH74EL2wYXsgwvZBxeyD/4F+dbyoXjg3NgAAAAASUVORK5CYII=" alt="Email" style="width: 30px; height: 30px; filter: brightness(0) saturate(100%) invert(100%);">
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Your Name. Built with passion and code.</p>
-    </footer>
-
     <script>
-        // Animated background
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // 3D Globe Animation with Three.js
+        let scene, camera, renderer, globe, particles;
+        let mouseX = 0, mouseY = 0;
+        let targetRotationX = 0, targetRotationY = 0;
 
-        const particles = [];
-        const particleCount = 50;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.fillStyle = 'rgba(0, 255, 136, 0.5)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function init3DGlobe() {
+            const container = document.getElementById('globe-container');
             
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
+            // Scene setup
+            scene = new THREE.Scene();
+            
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            camera.position.z = 15;
+            
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            
+            // Create globe
+            const geometry = new THREE.SphereGeometry(5, 50, 50);
+            
+            // Wireframe material for the globe
+            const wireframeMaterial = new THREE.MeshBasicMaterial({
+                color: 0x00ff88,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3
             });
-
-            // Draw connections
-            particles.forEach((p1, i) => {
-                particles.slice(i + 1).forEach(p2 => {
-                    const dx = p1.x - p2.x;
-                    const dy = p1.y - p2.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 150) {
-                        ctx.strokeStyle = `rgba(0, 255, 136, ${0.2 * (1 - distance / 150)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                });
-            });
-
-            requestAnimationFrame(animate);
+            
+            globe = new THREE.Mesh(geometry, wireframeMaterial);
+            scene.add(globe);
+            
+            // Create particles around the globe
+            createParticles();
+            
+            // Add ambient light
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            // Add point light
+            const pointLight = new THREE.PointLight(0x00ff88, 1, 100);
+            pointLight.position.set(10, 10, 10);
+            scene.add(pointLight);
+            
+            // Mouse move listener
+            document.addEventListener('mousemove', onMouseMove, false);
+            
+            // Start animation
+            animate3D();
         }
-
-        animate();
-
+        
+        function createParticles() {
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particleCount = 1000;
+            const positions = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                // Create particles in a sphere around the globe
+                const radius = 6 + Math.random() * 4;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos((Math.random() * 2) - 1);
+                
+                positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i + 2] = radius * Math.cos(phi);
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                color: 0x00ff88,
+                size: 0.05,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+        }
+        
+        function onMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) / 100;
+            mouseY = (event.clientY - window.innerHeight / 2) / 100;
+        }
+        
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            
+            // Smooth rotation based on mouse position
+            targetRotationX = mouseY * 0.5;
+            targetRotationY = mouseX * 0.5;
+            
+            // Auto-rotate slowly
+            globe.rotation.y += 0.001;
+            particles.rotation.y += 0.0005;
+            
+            // Apply mouse-based rotation smoothly
+            globe.rotation.x += (targetRotationX - globe.rotation.x) * 0.05;
+            globe.rotation.y += (targetRotationY - globe.rotation.y) * 0.05;
+            
+            particles.rotation.x += (targetRotationX - particles.rotation.x) * 0.03;
+            particles.rotation.y += (targetRotationY - particles.rotation.y) * 0.03;
+            
+            renderer.render(scene, camera);
+        }
+        
+        // Handle window resize
         window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
+        
+        // Initialize globe when page loads
+        window.addEventListener('load', init3DGlobe);
 
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -653,7 +687,7 @@
         // Form submission
         document.querySelector('.contact-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Thanks for reaching out! This is a demo form. In a real site, this would send your message.');
+            alert('Thank you for reaching out to me, I endeavour to reply as soon as possible.');
         });
     </script>
 </body>
