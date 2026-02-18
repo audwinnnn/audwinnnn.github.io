@@ -83,18 +83,20 @@
         .nav-links a {
             color: var(--text-color);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
             bottom: -5px;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
             height: 2px;
-            background: var(--accent-color);
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
             transition: width 0.3s;
         }
 
@@ -104,7 +106,10 @@
 
         .nav-links a:hover {
             color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
+
+        /* Floating name animation */
 
         /* Hero Section */
         .hero {
@@ -114,6 +119,37 @@
             justify-content: center;
             padding: 2rem 5%;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glowing cursor trail effect */
+        .cursor-glow {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-color), transparent);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 9999;
+            mix-blend-mode: screen;
+        }
+
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-color), #00ffff, var(--accent-color));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
         }
 
         /* Hero Content */
@@ -125,6 +161,61 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: fadeInUp 1s ease-out;
+            position: relative;
+        }
+
+        /* Typewriter cursor */
+        .hero-content h1::after {
+            content: '|';
+            color: var(--accent-color);
+            animation: blink 1s infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Floating badges */
+        .floating-badge {
+            position: absolute;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--accent-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .floating-badge:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-badge:nth-child(2) {
+            top: 30%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .floating-badge:nth-child(3) {
+            bottom: 25%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
         }
 
         .hero-content .subtitle {
@@ -184,6 +275,34 @@
 
         .btn:hover {
             color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Particle explosion */
+        .particle {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: explode 1s ease-out forwards;
+            z-index: 10000;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
         }
 
         .btn-primary {
@@ -213,6 +332,82 @@
             align-items: center;
         }
 
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 255, 255, 0.05));
+            padding: 4rem 5%;
+            margin: 4rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--secondary-color);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent 70%);
+            animation: rotate 4s linear infinite;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card:hover .stat-icon {
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
         .about-text {
             font-size: 1.1rem;
             line-height: 1.8;
@@ -236,12 +431,44 @@
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .skill-card:hover::before {
+            opacity: 1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .skill-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.05);
             border-color: var(--accent-color);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+        }
+
+        .skill-card img {
+            transition: transform 0.3s;
+        }
+
+        .skill-card:hover img {
+            transform: scale(1.2) rotate(5deg);
         }
 
         /* Projects Section */
@@ -256,16 +483,39 @@
             border-radius: 10px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: block;
+            position: relative;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
         }
 
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.4);
+            border-color: var(--accent-color);
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1);
         }
 
         .project-image {
@@ -276,6 +526,30 @@
             align-items: center;
             justify-content: center;
             font-size: 3rem;
+            transition: transform 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .project-content {
@@ -497,6 +771,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
             position: relative;
+            transform-style: preserve-3d;
         }
 
         .testimonial-card::before {
@@ -509,12 +784,18 @@
             opacity: 0.3;
             font-family: Georgia, serif;
             line-height: 1;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover::before {
+            transform: scale(1.2) rotate(-5deg);
+            opacity: 0.5;
         }
 
         .testimonial-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--accent-color);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3);
         }
 
         .testimonial-text {
@@ -543,6 +824,13 @@
             color: var(--bg-color);
             font-size: 1rem;
             flex-shrink: 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .testimonial-card:hover .author-avatar {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
         }
 
         .author-name {
@@ -593,13 +881,107 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Scroll progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), #00ffff);
+            width: 0%;
+            z-index: 10000;
+            transition: width 0.1s;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+        }
+
+        /* Loading screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 255, 136, 0.2);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.6);
+        }
+
+        .back-to-top::before {
+            content: '↑';
+            color: var(--bg-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar"></div>
+
     <!-- Background Animation -->
     <div class="bg-animation">
         <div id="globe-container"></div>
     </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top"></div>
 
     <!-- Navigation -->
     <nav>
@@ -615,6 +997,9 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="floating-badge">Flask Expert</div>
+        <div class="floating-badge">Full Stack Dev</div>
+        <div class="floating-badge">Python & JS</div>
         <div class="hero-content">
             <h1>Hi, I'm Audwin</h1>
             <p class="subtitle">Full Stack Developer & Creative Designer</p>
@@ -672,6 +1057,32 @@
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" width="36" height="36" alt="Flask" style="filter: invert(1);">
                     <div>Flask</div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section reveal">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" data-target="2">0</div>
+                <div class="stat-label">Projects Completed</div>
+                <div class="stat-icon">🚀</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="5">0</div>
+                <div class="stat-label">Technologies Mastered</div>
+                <div class="stat-icon">💻</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="100">0</div>
+                <div class="stat-label">Hours of Coding</div>
+                <div class="stat-icon">⚡</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="3">0</div>
+                <div class="stat-label">Happy Clients</div>
+                <div class="stat-icon">😊</div>
             </div>
         </div>
     </section>
@@ -735,9 +1146,30 @@
                 <h3>Project Demo</h3>
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem;">
                     <video controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px;">
-                        <source src="videos/cca-demo.mp4" type="video/mp4">
+                        <source src="cca-demo.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
+                </div>
+            </div>
+            <div class="modal-attachments">
+                <h3>Project Screenshots</h3>
+                <div class="attachment-grid">
+                    <div class="attachment-item">
+                        <img src="images/cca-homepage.png" alt="CCA Portal Homepage" onerror="this.parentElement.innerHTML='<p>📸 Homepage Screenshot</p>'">
+                        <p>Homepage with club overview</p>
+                    </div>
+                    <div class="attachment-item">
+                        <img src="images/cca-events.png" alt="Events Page" onerror="this.parentElement.innerHTML='<p>📸 Events Page Screenshot</p>'">
+                        <p>Event listings and sign-up</p>
+                    </div>
+                    <div class="attachment-item">
+                        <img src="images/cca-membership.png" alt="Membership Form" onerror="this.parentElement.innerHTML='<p>📸 Membership Form Screenshot</p>'">
+                        <p>Join club membership form</p>
+                    </div>
+                    <div class="attachment-item">
+                        <img src="images/cca-contact.png" alt="Contact Form" onerror="this.parentElement.innerHTML='<p>📸 Contact Form Screenshot</p>'">
+                        <p>Enquiry/contact form</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -755,26 +1187,69 @@
                 <span class="tag">CSS</span>
             </div>
             <div class="modal-description">
-                <p>ConnectFlow is an innovative Customer Relationship Management solution that leverages WhatsApp's messaging platform to create seamless communication channels between businesses and their customers. Built with Flask and utilizing Ngrok for secure tunneling, this system provides a robust backend for managing customer interactions.</p>
+                <p><strong>Problem Statement:</strong></p>
+                <p>Sales representatives in the retail and e-commerce industry face a critical challenge: handling 20-40 repetitive WhatsApp inquiries daily ("What is your address?", "What are your operating hours?"). This consumes significant time, diverts attention from high-value sales conversations, and leads to delayed responses that lower customer satisfaction.</p>
+                <br>
+                <p><strong>Our Solution:</strong></p>
+                <p>connect+ is an intelligent WhatsApp CRM that automates 40-60% of repetitive customer inquiries, dramatically improving response times to under 1 minute for common questions. The system triages and gathers basic customer information before routing to human sales representatives, freeing up 1-2 hours of daily workload for high-value activities like closing deals.</p>
                 <br>
                 <p><strong>Key Features:</strong></p>
                 <ul style="margin-left: 2rem; margin-top: 1rem;">
-                    <li>WhatsApp API integration for automated messaging</li>
-                    <li>Customer conversation history and analytics</li>
-                    <li>Automated response templates and workflows</li>
+                    <li>WhatsApp Business API integration for automated messaging</li>
+                    <li>AI-powered triage system to filter and categorize incoming inquiries</li>
+                    <li>Automated responses for repetitive questions (address, hours, basic product info)</li>
+                    <li>Customer conversation history logging and analytics</li>
+                    <li>Lead scoring based on initial queries to prioritize high-value prospects</li>
+                    <li>Seamless handoff to human sales reps for complex inquiries</li>
+                    <li>CRM integration to track and manage customer interactions</li>
                     <li>Secure tunneling with Ngrok for webhook handling</li>
-                    <li>Real-time message tracking and notifications</li>
-                    <li>Customer segmentation and targeted messaging</li>
-                    <li>Dashboard for monitoring engagement metrics</li>
+                    <li>SQLite database for storing customer data and conversation logs</li>
                 </ul>
+                <br>
+                <p><strong>Impact:</strong></p>
+                <p>By automating routine inquiries, sales teams can focus on relationship building and closing deals rather than answering the same questions repeatedly. This leads to improved customer satisfaction through faster responses and increased sales productivity.</p>
             </div>
             <div class="modal-attachments">
                 <h3>Project Demo</h3>
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem;">
                     <video controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px;">
-                        <source src="videos/whatsapp-demo.mp4" type="video/mp4">
+                        <source src="whatsapp-demo.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
+                </div>
+            </div>
+            <div class="modal-attachments">
+                <h3>Project Screenshots</h3>
+                <div class="attachment-grid">
+                    <div class="attachment-item">
+                        <img src="images/whatsapp-dashboard.png" alt="Dashboard" onerror="this.parentElement.innerHTML='<p>📸 CRM Dashboard Screenshot</p>'">
+                        <p>Main CRM dashboard</p>
+                    </div>
+                    <div class="attachment-item">
+                        <img src="images/whatsapp-chat.png" alt="Chat Interface" onerror="this.parentElement.innerHTML='<p>📸 Chat Interface Screenshot</p>'">
+                        <p>WhatsApp conversation interface</p>
+                    </div>
+                    <div class="attachment-item">
+                        <img src="images/whatsapp-automation.png" alt="Automation Settings" onerror="this.parentElement.innerHTML='<p>📸 Automation Settings Screenshot</p>'">
+                        <p>Automated response configuration</p>
+                    </div>
+                    <div class="attachment-item">
+                        <img src="images/whatsapp-analytics.png" alt="Analytics" onerror="this.parentElement.innerHTML='<p>📸 Analytics Dashboard Screenshot</p>'">
+                        <p>Customer interaction analytics</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-attachments">
+                <h3>System Architecture & Flow</h3>
+                <div class="attachment-grid">
+                    <div class="attachment-item" style="grid-column: 1 / -1;">
+                        <img src="images/whatsapp-architecture.png" alt="System Architecture" onerror="this.parentElement.innerHTML='<p>📊 System Architecture Diagram<br><br>WhatsApp Business API ↔ Ngrok Tunnel ↔ Flask Backend ↔ SQLite Database<br><br>AI Triage System filters inquiries and routes to automated responses or human sales reps</p>'">
+                        <p>System architecture and data flow</p>
+                    </div>
+                    <div class="attachment-item" style="grid-column: 1 / -1;">
+                        <img src="images/whatsapp-userflow.png" alt="User Flow" onerror="this.parentElement.innerHTML='<p>📊 Customer Interaction Flow<br><br>1. Customer sends message → 2. AI analyzes query → 3a. Automated response (simple queries) OR 3b. Route to sales rep (complex queries) → 4. Log in CRM</p>'">
+                        <p>Customer interaction flow diagram</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -980,7 +1455,35 @@
         });
         
         // Initialize globe when page loads
-        window.addEventListener('load', init3DGlobe);
+        window.addEventListener('load', () => {
+            init3DGlobe();
+            
+            // Hide loading screen
+            setTimeout(() => {
+                document.querySelector('.loading-screen').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+
+            // Back to top button
+            const backToTop = document.querySelector('.back-to-top');
+            if (winScroll > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Back to top click
+        document.querySelector('.back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1002,7 +1505,37 @@
 
                 if (elementTop < windowHeight - elementVisible) {
                     element.classList.add('active');
+                    
+                    // Trigger stat counter animation when stats section is visible
+                    if (element.classList.contains('stats-section') && !element.dataset.animated) {
+                        element.dataset.animated = 'true';
+                        animateCounters();
+                    }
                 }
+            });
+        }
+
+        // Animated number counter
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // 60fps
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target + '+';
+                    }
+                };
+                
+                updateCounter();
             });
         }
 
@@ -1012,7 +1545,50 @@
         // Form submission
         document.querySelector('.contact-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Thank you for reaching out to me, I endeavour to reply as soon as possible.');
+            createParticleExplosion(e.clientX, e.clientY);
+            setTimeout(() => {
+                alert('Thank you for reaching out to me, I endeavour to reply as soon as possible.');
+            }, 500);
+        });
+
+        // Particle explosion effect
+        function createParticleExplosion(x, y) {
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = 100 + Math.random() * 100;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // Add particle explosion to project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const rect = card.getBoundingClientRect();
+                createParticleExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            });
+        });
+
+        // Add particle explosion to CTA buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (!e.target.closest('form')) {
+                    const rect = btn.getBoundingClientRect();
+                    createParticleExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                }
+            });
         });
 
         // Modal functions
