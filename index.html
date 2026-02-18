@@ -674,6 +674,116 @@
             font-size: 1.5rem;
         }
 
+        /* Video and Screenshots Grid - 1:1 ratio */
+        .media-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .video-section {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-section video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .screenshots-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .screenshot-thumb {
+            cursor: pointer;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .screenshot-thumb:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .screenshot-thumb img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .screenshot-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        /* Lightbox for full-size images */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .media-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .attachment-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1039,6 +1149,12 @@
     <!-- Back to Top Button -->
     <div class="back-to-top"></div>
 
+    <!-- Lightbox for full-size images -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Full size image">
+    </div>
+
     <!-- Navigation -->
     <nav>
         <div class="logo">Audwin</div>
@@ -1201,32 +1317,31 @@
                 </ul>
             </div>
             <div class="modal-attachments">
-                <h3>Project Demo</h3>
-                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem;">
-                    <video controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px;">
-                        <source src="cca-demo.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-            <div class="modal-attachments">
-                <h3>Project Screenshots</h3>
-                <div class="attachment-grid">
-                    <div class="attachment-item">
-                        <img src="images/cca-homepage.png" alt="CCA Portal Homepage" onerror="this.parentElement.innerHTML='<p>📸 Homepage Screenshot</p>'">
-                        <p>Homepage with club overview</p>
+                <h3>Project Demo & Screenshots</h3>
+                <div class="media-container">
+                    <div class="video-section">
+                        <video controls>
+                            <source src="cca-demo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
-                    <div class="attachment-item">
-                        <img src="images/cca-events.png" alt="Events Page" onerror="this.parentElement.innerHTML='<p>📸 Events Page Screenshot</p>'">
-                        <p>Event listings and sign-up</p>
-                    </div>
-                    <div class="attachment-item">
-                        <img src="images/cca-membership.png" alt="Membership Form" onerror="this.parentElement.innerHTML='<p>📸 Membership Form Screenshot</p>'">
-                        <p>Join club membership form</p>
-                    </div>
-                    <div class="attachment-item">
-                        <img src="images/cca-aboutus.png" alt="About Us Page" onerror="this.parentElement.innerHTML='<p>📸 About Us Page Screenshot</p>'">
-                        <p>About Us page</p>
+                    <div class="screenshots-section">
+                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-homepage.png')">
+                            <img src="images/cca-homepage.png" alt="Homepage" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Homepage%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">Homepage</div>
+                        </div>
+                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-events.png')">
+                            <img src="images/cca-events.png" alt="Events" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Events%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">Events Page</div>
+                        </div>
+                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-membership.png')">
+                            <img src="images/cca-membership.png" alt="Membership" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Join Form%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">Membership Form</div>
+                        </div>
+                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-aboutus.png')">
+                            <img src="images/cca-aboutus.png" alt="About Us" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 About Us%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">About Us Page</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1268,32 +1383,31 @@
                 <p>By automating routine inquiries, sales teams can focus on relationship building and closing deals rather than answering the same questions repeatedly. This leads to improved customer satisfaction through faster responses and increased sales productivity.</p>
             </div>
             <div class="modal-attachments">
-                <h3>Project Demo</h3>
-                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem;">
-                    <video controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px;">
-                        <source src="whatsapp-demo.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-            <div class="modal-attachments">
-                <h3>Project Screenshots</h3>
-                <div class="attachment-grid">
-                    <div class="attachment-item">
-                        <img src="images/whatsapp-dashboard.png" alt="Dashboard" onerror="this.parentElement.innerHTML='<p>📸 CRM Dashboard Screenshot</p>'">
-                        <p>Main CRM dashboard</p>
+                <h3>Project Demo & Screenshots</h3>
+                <div class="media-container">
+                    <div class="video-section">
+                        <video controls>
+                            <source src="whatsapp-demo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
-                    <div class="attachment-item">
-                        <img src="images/whatsapp-chat.png" alt="Chat Interface" onerror="this.parentElement.innerHTML='<p>📸 Chat Interface Screenshot</p>'">
-                        <p>WhatsApp conversation interface</p>
-                    </div>
-                    <div class="attachment-item">
-                        <img src="images/whatsapp-automation.png" alt="Automation Settings" onerror="this.parentElement.innerHTML='<p>📸 Automation Settings Screenshot</p>'">
-                        <p>Automated response configuration</p>
-                    </div>
-                    <div class="attachment-item">
-                        <img src="images/whatsapp-analytics.png" alt="Analytics" onerror="this.parentElement.innerHTML='<p>📸 Analytics Dashboard Screenshot</p>'">
-                        <p>Customer interaction analytics</p>
+                    <div class="screenshots-section">
+                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-dashboard.png')">
+                            <img src="images/whatsapp-dashboard.png" alt="Dashboard" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Dashboard%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">CRM Dashboard</div>
+                        </div>
+                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-chat.png')">
+                            <img src="images/whatsapp-chat.png" alt="Chat" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Chat%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">Chat Interface</div>
+                        </div>
+                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-automation.png')">
+                            <img src="images/whatsapp-automation.png" alt="Automation" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Automation%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">Automation Settings</div>
+                        </div>
+                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-analytics.png')">
+                            <img src="images/whatsapp-analytics.png" alt="Analytics" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Analytics%3C/text%3E%3C/svg%3E'">
+                            <div class="screenshot-label">Analytics Dashboard</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1684,6 +1798,21 @@
         function closeModal(projectType) {
             const modal = document.getElementById(projectType + 'Modal');
             modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Lightbox functions
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
