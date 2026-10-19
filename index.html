@@ -1,1834 +1,1544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audwin Ong - Portfolio</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-color: #0a0a0a;
-            --text-color: #e0e0e0;
-            --accent-color: #00ff88;
-            --secondary-color: #1a1a1a;
-            --hover-color: #00cc6a;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Animated background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-        }
-
-        .bg-animation canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        #globe-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            transition: all 0.3s;
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-
-        /* Floating name animation */
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 5%;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Glowing cursor trail effect */
-        .cursor-glow {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--accent-color), transparent);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 9999;
-            mix-blend-mode: screen;
-        }
-
-        /* Animated gradient text */
-        .gradient-text {
-            background: linear-gradient(90deg, var(--accent-color), #00ffff, var(--accent-color));
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 3s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-        }
-
-        /* Hero Content */
-        .hero-content h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--accent-color), #00ffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 1s ease-out;
-            position: relative;
-        }
-
-        /* Typewriter cursor */
-        .hero-content h1::after {
-            content: '|';
-            color: var(--accent-color);
-            animation: blink 1s infinite;
-            margin-left: 5px;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Floating badges */
-        .floating-badge {
-            position: absolute;
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--accent-color);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: var(--accent-color);
-            font-weight: bold;
-            animation: float 3s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-
-        .floating-badge:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-badge:nth-child(2) {
-            top: 30%;
-            right: 15%;
-            animation-delay: 1s;
-        }
-
-        .floating-badge:nth-child(3) {
-            bottom: 25%;
-            left: 15%;
-            animation-delay: 2s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        .hero-content .subtitle {
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            color: var(--text-color);
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out 0.3s forwards;
-            font-family: 'Courier New', monospace;
-            position: relative;
-        }
-
-        /* Typing effect for subtitle */
-        .typing-effect {
-            overflow: hidden;
-            border-right: 3px solid var(--accent-color);
-            white-space: nowrap;
-            animation: typing 3s steps(40, end) 1s forwards, blink-caret 0.75s step-end infinite;
-            width: 0;
-            display: inline-block;
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: var(--accent-color); }
-        }
-
-        /* Code-style highlight */
-        .code-highlight {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        .code-bracket {
-            color: #00ffff;
-        }
-
-        .code-tag {
-            color: #ff79c6;
-        }
-
-        .hero-content .description {
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto 3rem;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out 0.6s forwards;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out 0.9s forwards;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: 2px solid var(--accent-color);
-            background: transparent;
-            color: var(--accent-color);
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--accent-color);
-            transition: left 0.3s;
-            z-index: -1;
-        }
-
-        .btn:hover::before {
-            left: 0;
-        }
-
-        .btn:hover {
-            color: var(--bg-color);
-            transform: scale(1.05);
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Particle explosion */
-        .particle {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: explode 1s ease-out forwards;
-            z-index: 10000;
-        }
-
-        @keyframes explode {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) scale(0);
-                opacity: 0;
-            }
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            color: var(--bg-color);
-        }
-
-        /* Section Styling */
-        section {
-            padding: 6rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 3rem;
-            text-align: center;
-            color: var(--accent-color);
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        /* Stats Section */
-        .stats-section {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 255, 255, 0.05));
-            padding: 4rem 5%;
-            margin: 4rem auto;
-            width: 100%;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .stat-card {
-            background: var(--secondary-color);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            border: 2px solid rgba(0, 255, 136, 0.2);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent 70%);
-            animation: rotate 4s linear infinite;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            border-color: var(--accent-color);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
-        }
-
-        .stat-number {
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-icon {
-            font-size: 2.5rem;
-            opacity: 0.3;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-card:hover .stat-icon {
-            animation: bounce 0.5s;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-        }
-
-        .skill-card {
-            background: var(--secondary-color);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .skill-card:hover::before {
-            opacity: 1;
-            animation: rotate 3s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            border-color: var(--accent-color);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
-        }
-
-        .skill-card img {
-            transition: transform 0.3s;
-        }
-
-        .skill-card:hover img {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: var(--secondary-color);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            position: relative;
-        }
-
-        .project-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.4s;
-            pointer-events: none;
-        }
-
-        .project-card:hover::after {
-            opacity: 1;
-        }
-
-        .project-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.4);
-            border-color: var(--accent-color);
-        }
-
-        .project-card:hover .project-image {
-            transform: scale(1.1);
-        }
-
-        .project-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            transition: transform 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-image::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.1) 50%,
-                transparent 70%
-            );
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .project-content {
-            padding: 1.5rem;
-        }
-
-        .project-content h3 {
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .project-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .tag {
-            background: rgba(0, 255, 136, 0.1);
-            color: var(--accent-color);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-
-        /* Project Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-            animation: fadeIn 0.3s;
-        }
-
-        .modal-content {
-            background-color: var(--secondary-color);
-            margin: 5% auto;
-            padding: 2rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 10px;
-            width: 80%;
-            max-width: 800px;
-            position: relative;
-            animation: slideDown 0.3s;
-        }
-
-        .close {
-            color: var(--text-color);
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close:hover {
-            color: var(--accent-color);
-        }
-
-        .modal h2 {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            text-align: left;
-        }
-
-        .modal-description {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        .modal-attachments {
-            margin-top: 2rem;
-        }
-
-        .modal-attachments h3 {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* Video and Screenshots Grid - 1:1 ratio */
-        .media-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .video-section {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-        }
-
-        .video-section video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-        }
-
-        .screenshots-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .screenshot-thumb {
-            cursor: pointer;
-            border-radius: 5px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .screenshot-thumb:hover {
-            transform: scale(1.05);
-            border-color: var(--accent-color);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
-        }
-
-        .screenshot-thumb img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .screenshot-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 0.5rem;
-            font-size: 0.8rem;
-            text-align: center;
-            color: var(--text-color);
-        }
-
-        /* Lightbox for full-size images */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            font-size: 3rem;
-            color: white;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .lightbox-close:hover {
-            color: var(--accent-color);
-        }
-
-        @media (max-width: 768px) {
-            .media-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .attachment-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .attachment-item {
-            background: var(--bg-color);
-            padding: 1rem;
-            border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .attachment-item img {
-            max-width: 100%;
-            width: 100%;
-            height: auto;
-            min-height: 250px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Full width images for diagrams */
-        .attachment-item[style*="grid-column"] img {
-            min-height: 400px;
-        }
-
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Contact Section */
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            margin-bottom: 0.5rem;
-            color: var(--accent-color);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            padding: 1rem;
-            background: var(--secondary-color);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            color: var(--text-color);
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin-top: 3rem;
-        }
-
-        .social-links a {
-            color: var(--text-color);
-            font-size: 2rem;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: var(--secondary-color);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .social-links a:hover {
-            color: var(--accent-color);
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
-        }
-
-        .social-links a svg {
-            transition: fill 0.3s;
-        }
-
-        .social-links a:hover svg {
-            fill: var(--accent-color);
-        }
-
-        .skill-card svg {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Testimonials Section */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .testimonial-card {
-            background: var(--secondary-color);
-            border-radius: 10px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .testimonial-card::before {
-            content: '"';
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            font-size: 5rem;
-            color: var(--accent-color);
-            opacity: 0.3;
-            font-family: Georgia, serif;
-            line-height: 1;
-            transition: all 0.3s;
-        }
-
-        .testimonial-card:hover::before {
-            transform: scale(1.2) rotate(-5deg);
-            opacity: 0.5;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-color);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3);
-        }
-
-        .testimonial-text {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--text-color);
-            margin-bottom: 1.5rem;
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-color), #00ffff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--bg-color);
-            font-size: 1rem;
-            flex-shrink: 0;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-        }
-
-        .testimonial-card:hover .author-avatar {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
-        }
-
-        .author-name {
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-
-        .author-role {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            section {
-                padding: 4rem 5%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scroll reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Scroll progress bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-color), #00ffff);
-            width: 0%;
-            z-index: 10000;
-            transition: width 0.1s;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
-        }
-
-        /* Loading screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(0, 255, 136, 0.2);
-            border-top-color: var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Back to top button */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.6);
-        }
-
-        .back-to-top::before {
-            content: '↑';
-            color: var(--bg-color);
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Audwin Ong's development portfolio featuring ArcaneVault, CCA Portal, and connect+."
+  >
+  <title>Audwin Ong — Developer & Builder</title>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+    :root {
+      --paper: #f6f5f0;
+      --ink: #232724;
+      --muted: #686c65;
+      --line: #d8d9d0;
+      --accent: #d5ed91;
+      --forest: #273a30;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 32px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--ink);
+    }
+
+    :focus-visible {
+      outline: 3px solid #6b8e40;
+      outline-offset: 5px;
+    }
+
+    .wrap {
+      width: min(1320px, 100%);
+      margin: 0 auto;
+      padding: 0 6%;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 16px;
+      z-index: 100;
+      padding: 15px;
+      background: var(--accent);
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    /* Navigation */
+
+    .navigation {
+      min-height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo {
+      font-family: "Manrope", sans-serif;
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #708b46;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      transition: color 180ms ease;
+    }
+
+    .nav-links a:hover {
+      color: #627b3b;
+    }
+
+    .nav-links a:last-child {
+      padding-bottom: 3px;
+      border-bottom: 1px solid currentColor;
+    }
+
+    /* Hero */
+
+    .hero {
+      padding: 82px 0 55px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #7e984e;
+    }
+
+    .hero h1 {
+      max-width: 1000px;
+      margin: 29px 0 32px;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(52px, 7.8vw, 106px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -6px;
+    }
+
+    .hero h1 em {
+      font-family: Georgia, serif;
+      font-weight: 400;
+    }
+
+    .highlight {
+      background-image: linear-gradient(
+        transparent 77%,
+        var(--accent) 77%,
+        var(--accent) 90%,
+        transparent 90%
+      );
+      white-space: nowrap;
+    }
+
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .intro {
+      max-width: 460px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 35px;
+      padding: 17px 24px;
+      border: 0;
+      border-radius: 4px;
+      background: var(--ink);
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition:
+        transform 180ms ease,
+        background 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      background: #3a443b;
+    }
+
+    .hero-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 62px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1.3px;
+    }
+
+    /* Section headings */
+
+    .section {
+      padding: 64px 0;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 34px;
+    }
+
+    .section-number {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+      letter-spacing: 1.4px;
+    }
+
+    .section-heading h2 {
+      font-family: "Manrope", sans-serif;
+      font-size: 42px;
+      font-weight: 500;
+      letter-spacing: -2px;
+    }
+
+    .section-heading > p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* Project cards */
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 42px 28px;
+    }
+
+    .project-featured {
+      grid-column: 1 / -1;
+    }
+
+    .project-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 310px;
+      overflow: hidden;
+      padding: 45px;
+      border-radius: 7px;
+    }
+
+    .visual-vault {
+      min-height: 445px;
+      background: #dde3d7;
+    }
+
+    .visual-portal {
+      background: #e9d9c8;
+    }
+
+    .visual-crm {
+      background: #d6dfe8;
+    }
+
+    .preview-label {
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      right: 20px;
+      color: #4b554c;
+      font-size: 9px;
+      line-height: 1.6;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .browser {
+      width: 88%;
+      overflow: hidden;
+      border: 1px solid #ffffff80;
+      border-radius: 7px;
+      background: #fbfaf6;
+      box-shadow: 0 22px 40px #1b2a241c;
+      transform: rotate(-2deg);
+    }
+
+    .browser-small {
+      width: 100%;
+      transform: rotate(2deg);
+    }
+
+    .browser-top {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 29px;
+      padding: 10px 15px;
+      border-bottom: 1px solid #e5e6df;
+      color: #71776e;
+      font-size: 8px;
+    }
+
+    .browser-top i {
+      width: 5px;
+      height: 5px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #c5c9be;
+    }
+
+    .browser-top span {
+      margin: auto;
+      padding-left: 8px;
+    }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding-top: 20px;
+    }
+
+    .project h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.8px;
+    }
+
+    .project-description {
+      max-width: 570px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 17px;
+    }
+
+    .tags span {
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      color: #64695f;
+      font-size: 10px;
+    }
+
+    .detail-button {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border: 1px solid #c7cbc0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--ink);
+      font-size: 20px;
+      cursor: pointer;
+      transition:
+        background 180ms ease,
+        transform 180ms ease;
+    }
+
+    .detail-button:hover {
+      background: var(--accent);
+      transform: rotate(8deg);
+    }
+
+    /* ArcaneVault illustrative preview */
+
+    .market {
+      padding: 22px 27px;
+    }
+
+    .market-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .mini-pill {
+      padding: 7px 12px;
+      border-radius: 3px;
+      background: var(--forest);
+      color: white;
+      font-size: 8px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .market-hero {
+      position: relative;
+      margin: 18px 0;
+      padding: 22px 25px;
+      overflow: hidden;
+      border-radius: 4px;
+      background: var(--forest);
+      color: white;
+    }
+
+    .market-hero strong {
+      position: relative;
+      z-index: 1;
+      font-family: Georgia, serif;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .market-hero p {
+      position: relative;
+      z-index: 1;
+      margin-top: 9px;
+      color: #d0ddce;
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .market-star {
+      position: absolute;
+      top: 4px;
+      right: 32px;
+      color: var(--accent);
+      font-size: 90px;
+    }
+
+    .sample-products {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .item-art {
+      display: grid;
+      place-items: center;
+      height: 80px;
+      border-radius: 3px;
+      background: #eae9e0;
+    }
+
+    .item-art svg {
+      width: 70px;
+      height: 58px;
+    }
+
+    .sample-products b {
+      display: block;
+      margin-top: 8px;
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .sample-products small {
+      color: #72766a;
+      font-size: 8px;
+    }
+
+    .vault-caption {
+      display: none;
+    }
+
+    /* CCA illustrative preview */
+
+    .club {
+      padding: 25px;
+      background: #faf8f1;
+    }
+
+    .club-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .club-title {
+      max-width: 230px;
+      margin: 25px 0 12px;
+      font-family: "Manrope", sans-serif;
+      font-size: 29px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .club-copy {
+      max-width: 200px;
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.6;
+    }
+
+    .club-bottom {
+      display: flex;
+      gap: 8px;
+      height: 38px;
+    }
+
+    .club-bottom span {
+      width: 33.333%;
+      border-radius: 3px;
+      background: #e2e8d8;
+    }
+
+    .club-bottom span:nth-child(2) {
+      background: #e6d4bc;
+    }
+
+    .club-bottom span:nth-child(3) {
+      background: #d5dedf;
+    }
+
+    /* connect+ illustrative preview */
+
+    .dashboard {
+      display: flex;
+      min-height: 220px;
+    }
+
+    .dashboard-sidebar {
+      width: 28%;
+      padding: 18px 12px;
+      background: #243c35;
+      color: #d2e1d7;
+      font-size: 8px;
+    }
+
+    .dashboard-sidebar b {
+      display: block;
+      margin-bottom: 25px;
+      font-size: 15px;
+    }
+
+    .dashboard-sidebar span {
+      display: block;
+      margin: 15px 0;
+      line-height: 1.5;
+    }
+
+    .inbox {
+      width: 72%;
+      padding: 17px;
+    }
+
+    .inbox-title {
+      margin: 0 0 18px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .sample-message {
+      display: flex;
+      gap: 8px;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e3de;
+      font-size: 8px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 23px;
+      height: 23px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #dce8da;
+      font-size: 8px;
+    }
+
+    .sample-message b {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .sample-message small {
+      color: #72796f;
+      font-size: 7px;
+      line-height: 1.5;
+    }
+
+    /* About */
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      padding-top: 65px;
+      border-top: 1px solid var(--line);
+    }
+
+    .about h2 {
+      max-width: 380px;
+      font-family: "Manrope", sans-serif;
+      font-size: 46px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -2px;
+    }
+
+    .about-copy > p {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .about-copy > p + p {
+      margin-top: 18px;
+    }
+
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .skills h3 {
+      margin-bottom: 10px;
+      font-size: 11px;
+      line-height: 1.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .skills p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    /* Contact */
+
+    .contact {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      margin: 30px 0 50px;
+      padding: 55px;
+      border-radius: 8px;
+      background: var(--forest);
+      color: var(--paper);
+    }
+
+    .contact h2 {
+      margin: 22px 0;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(35px, 4.5vw, 60px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -2px;
+    }
+
+    .contact p {
+      color: #c0ccbe;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .contact .button {
+      background: var(--accent);
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .contact .button:hover {
+      background: #e3f5b5;
+    }
+
+    /* Footer */
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 25px 0 35px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    footer a {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    /* Project notes dialog */
+
+    dialog {
+      width: calc(100% - 32px);
+      max-width: 580px;
+      max-height: calc(100dvh - 48px);
+      overflow-y: auto;
+      padding: 35px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    dialog::backdrop {
+      background: #14271c99;
+      backdrop-filter: blur(5px);
+    }
+
+    dialog h2 {
+      margin: 15px 0;
+      font-family: "Manrope", sans-serif;
+      font-size: 34px;
+      font-weight: 500;
+      letter-spacing: -1px;
+    }
+
+    dialog p {
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .dialog-note {
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    /* Desktop */
+
+    @media (min-width: 1000px) {
+      .visual-vault .browser {
+        max-width: 650px;
+        margin-right: 110px;
+      }
+
+      .vault-caption {
+        position: absolute;
+        right: 35px;
+        bottom: 25px;
+        display: block;
+        color: #62715c;
+        font-family: Georgia, serif;
+        font-size: 19px;
+        font-style: italic;
+        line-height: 1.3;
+      }
+    }
+
+    /* Mobile */
+
+    @media (max-width: 700px) {
+      .navigation {
+        min-height: 78px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding-top: 55px;
+      }
+
+      .hero h1 {
+        letter-spacing: -3px;
+      }
+
+      .hero-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-foot {
+        gap: 15px;
+        margin-top: 40px;
+        font-size: 9px;
+        line-height: 1.7;
+      }
+
+      .section {
+        padding: 45px 0;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-heading h2 {
+        font-size: 36px;
+      }
+
+      .section-heading > p {
+        margin-top: 12px;
+      }
+
+      .projects {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .project-featured {
+        grid-column: auto;
+      }
+
+      .project-visual,
+      .visual-vault {
+        min-height: 300px;
+        padding: 45px 20px 34px;
+      }
+
+      .visual-vault .browser {
+        width: 100%;
+      }
+
+      .market {
+        padding: 15px;
+      }
+
+      .market-hero {
+        padding: 18px;
+      }
+
+      .market-hero strong {
+        font-size: 24px;
+      }
+
+      .market-star {
+        top: 12px;
+        right: 15px;
+        font-size: 65px;
+      }
+
+      .sample-products {
+        gap: 6px;
+      }
+
+      .item-art {
+        height: 55px;
+      }
+
+      .item-art svg {
+        width: 45px;
+        height: 42px;
+      }
+
+      .about {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 25px;
+      }
+
+      .about h2 {
+        font-size: 38px;
+      }
+
+      .contact {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px;
+      }
+
+      .contact h2 {
+        letter-spacing: -1px;
+      }
+
+      footer {
+        font-size: 10px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .hero h1 {
+        font-size: 45px;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .skills {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .market-nav {
+        font-size: 14px;
+      }
+
+      .mini-pill {
+        padding: 6px 8px;
+        font-size: 7px;
+      }
+
+      .club-nav {
+        font-size: 8px;
+      }
+
+      .dashboard-sidebar {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .dashboard-sidebar b {
+        font-size: 12px;
+      }
+
+      .inbox {
+        padding: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen">
-        <div class="loader"></div>
-    </div>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Scroll Progress Bar -->
-    <div class="progress-bar"></div>
+  <div class="wrap">
+    <header>
+      <nav class="navigation" aria-label="Main navigation">
+        <a class="logo" href="#main" aria-label="Audwin home">
+          audwin<span>.</span>
+        </a>
 
-    <!-- Background Animation -->
-    <div class="bg-animation">
-        <div id="globe-container"></div>
-    </div>
-
-    <!-- Back to Top Button -->
-    <div class="back-to-top"></div>
-
-    <!-- Lightbox for full-size images -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close">&times;</span>
-        <img id="lightbox-img" src="" alt="Full size image">
-    </div>
-
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">Audwin</div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="floating-badge">Flask Expert</div>
-        <div class="floating-badge">Full Stack Dev</div>
-        <div class="floating-badge">Python & JS</div>
-        <div class="hero-content">
-            <h1>Hi, I'm Audwin</h1>
-            <p class="subtitle">
-                <span class="typing-effect" id="typed-text"></span>
-            </p>
-            <p class="description">
-                I build exceptional digital experiences that combine beautiful design 
-                with powerful functionality. Let's create something amazing together.
-            </p>
-            <div class="cta-buttons">
-                <a href="#projects" class="btn btn-primary">View My Projects</a>
-                <a href="#contact" class="btn">Get In Touch</a>
-            </div>
+        <div class="nav-links">
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#contact">Let’s talk ↗</a>
         </div>
-    </section>
+      </nav>
+    </header>
 
-    <!-- About Section -->
-    <section id="about" class="reveal">
-        <h2>About Me</h2>
-        <div class="about-content">
-            <div class="about-text">
-                <p>
-                    I'm a passionate developer with a love for creating elegant solutions 
-                    to complex problems. With expertise in modern web technologies, I specialize 
-                    in building responsive, user-friendly applications.
+    <main id="main">
+      <!-- Hero -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="eyebrow">
+          <span class="status-dot" aria-hidden="true"></span>
+          Audwin Ong · Developer & builder
+        </div>
+
+        <h1 id="hero-title">
+          Turning ideas into<br>
+          <em>things</em> you can <span class="highlight">use.</span>
+        </h1>
+
+        <div class="hero-bottom">
+          <p class="intro">
+            I build web experiences that connect people, simplify
+            everyday tasks, and make room for a little curiosity.
+          </p>
+
+          <a class="button" href="#work">
+            Explore my work
+            <span aria-hidden="true">↘</span>
+          </a>
+        </div>
+
+        <div class="hero-foot">
+          <span>A PORTFOLIO OF PROJECTS & EXPLORATIONS</span>
+          <span>DESIGN WITH INTENT. BUILD WITH CARE.</span>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="work" class="section" aria-labelledby="work-title">
+        <div class="section-heading">
+          <div>
+            <span class="section-number">01 / SELECTED WORK</span>
+            <h2 id="work-title">A few things I’ve built.</h2>
+          </div>
+
+          <p>Web interfaces, useful tools, and new ideas.</p>
+        </div>
+
+        <div class="projects">
+          <!-- ArcaneVault -->
+          <article class="project project-featured">
+            <div class="project-visual visual-vault">
+              <span class="preview-label">
+                Illustrative interface · not a project screenshot
+              </span>
+
+              <div class="browser" aria-hidden="true">
+                <div class="browser-top">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <span>ArcaneVault / Marketplace concept</span>
+                </div>
+
+                <div class="market">
+                  <div class="market-nav">
+                    arcanevault
+                    <span class="mini-pill">The marketplace</span>
+                  </div>
+
+                  <div class="market-hero">
+                    <strong>
+                      Good finds.<br>
+                      New beginnings.
+                    </strong>
+
+                    <p>A place for things to find their next owner.</p>
+                    <span class="market-star">✳</span>
+                  </div>
+
+                  <div class="sample-products">
+                    <div>
+                      <div class="item-art">
+                        <svg viewBox="0 0 80 60">
+                          <path
+                            d="M20 12h40v35H20zM28 7h24v5"
+                            fill="#6c775f"
+                          />
+                          <circle
+                            cx="40"
+                            cy="30"
+                            r="13"
+                            fill="#273a30"
+                          />
+                          <circle
+                            cx="40"
+                            cy="30"
+                            r="8"
+                            fill="#a6b29c"
+                          />
+                        </svg>
+                      </div>
+                      <b>Vintage camera</b>
+                      <small>Illustrative listing</small>
+                    </div>
+
+                    <div>
+                      <div class="item-art">
+                        <svg viewBox="0 0 80 60">
+                          <path
+                            d="M25 35V24a15 15 0 0 1 30 0v11"
+                            fill="none"
+                            stroke="#56634f"
+                            stroke-width="7"
+                          />
+                          <rect
+                            x="19"
+                            y="27"
+                            width="12"
+                            height="22"
+                            rx="5"
+                            fill="#273a30"
+                          />
+                          <rect
+                            x="49"
+                            y="27"
+                            width="12"
+                            height="22"
+                            rx="5"
+                            fill="#273a30"
+                          />
+                        </svg>
+                      </div>
+                      <b>Everyday audio</b>
+                      <small>Illustrative listing</small>
+                    </div>
+
+                    <div>
+                      <div class="item-art">
+                        <svg viewBox="0 0 80 60">
+                          <path
+                            d="M20 15h17q5 0 5 5v33q-8-7-22-5zm44 0H47q-5 0-5 5v33q8-7 22-5z"
+                            fill="#8b957b"
+                            stroke="#f3f2e8"
+                            stroke-width="2"
+                          />
+                        </svg>
+                      </div>
+                      <b>A good read</b>
+                      <small>Illustrative listing</small>
+                    </div>
+
+                    <div>
+                      <div class="item-art">
+                        <svg viewBox="0 0 80 60">
+                          <path
+                            d="M30 20q0-14 10-14t10 14M25 20h30l6 33H19z"
+                            fill="none"
+                            stroke="#7c735a"
+                            stroke-width="5"
+                          />
+                        </svg>
+                      </div>
+                      <b>Daily essentials</b>
+                      <small>Illustrative listing</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <span class="vault-caption" aria-hidden="true">
+                A new home for<br>
+                your next find.
+              </span>
+            </div>
+
+            <div class="project-meta">
+              <div>
+                <h3>ArcaneVault</h3>
+
+                <p class="project-description">
+                  A Carousell-inspired marketplace project exploring
+                  how people can discover, buy, and sell pre-loved items.
                 </p>
-                <p style="margin-top: 1rem;">
-                    When I'm not coding, you can find me exploring new technologies, 
-                    contributing to open source, or sharing knowledge with the developer community.
+
+                <div class="tags" aria-label="Project categories">
+                  <span>Marketplace</span>
+                  <span>Web application</span>
+                  <span>Project exploration</span>
+                </div>
+              </div>
+
+              <button
+                class="detail-button"
+                type="button"
+                data-project="vault"
+                aria-label="Read about ArcaneVault"
+                aria-haspopup="dialog"
+              >
+                ↗
+              </button>
+            </div>
+          </article>
+
+          <!-- CCA Portal -->
+          <article class="project">
+            <div class="project-visual visual-portal">
+              <span class="preview-label">Illustrative interface</span>
+
+              <div class="browser browser-small" aria-hidden="true">
+                <div class="browser-top">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <span>CCA Portal / Interface concept</span>
+                </div>
+
+                <div class="club">
+                  <div class="club-nav">
+                    <span>THE CCA PORTAL</span>
+                    <span>Discover · Join · Connect</span>
+                  </div>
+
+                  <div class="club-title">
+                    Find your people.<br>
+                    Do your thing.
+                  </div>
+
+                  <p class="club-copy">
+                    Explore a club, discover upcoming events, and take
+                    the first step towards getting involved.
+                  </p>
+
+                  <div class="club-bottom">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-meta">
+              <div>
+                <h3>CCA Portal</h3>
+
+                <p class="project-description">
+                  A club portal bringing information, event sign-ups,
+                  membership, and enquiries into one place.
                 </p>
-                <a href="resume/Audwin_Ong_Resume.pdf" download class="btn btn-primary" style="display: inline-block; margin-top: 2rem;">
-                    📄 Download Resume
-                </a>
+
+                <div class="tags" aria-label="Project technologies and categories">
+                  <span>HTML</span>
+                  <span>CSS</span>
+                  <span>Student community</span>
+                </div>
+              </div>
+
+              <button
+                class="detail-button"
+                type="button"
+                data-project="cca"
+                aria-label="Read about CCA Portal"
+                aria-haspopup="dialog"
+              >
+                ↗
+              </button>
             </div>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="36" height="36" alt="JavaScript">
-                    <div>JavaScript</div>
+          </article>
+
+          <!-- connect+ -->
+          <article class="project">
+            <div class="project-visual visual-crm">
+              <span class="preview-label">Illustrative interface</span>
+
+              <div class="browser browser-small" aria-hidden="true">
+                <div class="browser-top">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <span>connect+ / Interface concept</span>
                 </div>
-                <div class="skill-card">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" width="36" height="36" alt="MongoDB">
-                    <div>MongoDB</div>
+
+                <div class="dashboard">
+                  <div class="dashboard-sidebar">
+                    <b>connect+</b>
+                    <span>↳ Team inbox</span>
+                    <span>◌ Contacts</span>
+                    <span>▦ Overview</span>
+                  </div>
+
+                  <div class="inbox">
+                    <div class="inbox-title">
+                      A little more connected.
+                    </div>
+
+                    <div class="sample-message">
+                      <span class="avatar">A</span>
+                      <div>
+                        <b>Example conversation</b>
+                        <small>A product enquiry, all in one place.</small>
+                      </div>
+                    </div>
+
+                    <div class="sample-message">
+                      <span class="avatar">B</span>
+                      <div>
+                        <b>Example conversation</b>
+                        <small>Ready for a team member to review.</small>
+                      </div>
+                    </div>
+
+                    <div class="sample-message">
+                      <span class="avatar">C</span>
+                      <div>
+                        <b>Example conversation</b>
+                        <small>A simpler view of the conversation.</small>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="skill-card">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="36" height="36" alt="CSS">
-                    <div>CSS</div>
-                </div>
-                <div class="skill-card">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="36" height="36" alt="HTML">
-                    <div>HTML</div>
-                </div>
-                <div class="skill-card">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="36" height="36" alt="Python">
-                    <div>Python</div>
-                </div>
-                <div class="skill-card">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" width="36" height="36" alt="Flask" style="filter: invert(1);">
-                    <div>Flask</div>
-                </div>
+              </div>
             </div>
+
+            <div class="project-meta">
+              <div>
+                <h3>connect+</h3>
+
+                <p class="project-description">
+                  A WhatsApp CRM project exploring messaging,
+                  automated enquiry handling, and a shared view of
+                  customer conversations.
+                </p>
+
+                <div class="tags" aria-label="Project technologies">
+                  <span>Flask</span>
+                  <span>SQLite</span>
+                  <span>WhatsApp API</span>
+                  <span>Ngrok</span>
+                </div>
+              </div>
+
+              <button
+                class="detail-button"
+                type="button"
+                data-project="crm"
+                aria-label="Read about connect plus"
+                aria-haspopup="dialog"
+              >
+                ↗
+              </button>
+            </div>
+          </article>
         </div>
-    </section>
+      </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section reveal">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" data-target="2">0</div>
-                <div class="stat-label">Projects Completed</div>
-                <div class="stat-icon">🚀</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" data-target="5">0</div>
-                <div class="stat-label">Technologies Mastered</div>
-                <div class="stat-icon">💻</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" data-target="150+">0</div>
-                <div class="stat-label">Hours of Coding</div>
-                <div class="stat-icon">⚡</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" data-target="10">0</div>
-                <div class="stat-label">Happy Clients</div>
-                <div class="stat-icon">😊</div>
-            </div>
+      <!-- About -->
+      <section
+        id="about"
+        class="section about"
+        aria-labelledby="about-title"
+      >
+        <div>
+          <span class="section-number">
+            02 / THE PERSON BEHIND THE PROJECTS
+          </span>
+
+          <h2 id="about-title">
+            Curious by nature.<br>
+            A builder by practice.
+          </h2>
         </div>
-    </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="reveal">
-        <h2>Featured Projects</h2>
-        <p style="text-align: center; color: var(--text-color); font-size: 1.1rem; margin-top: -2rem; margin-bottom: 3rem;">Click on the card to find out more!</p>
-        <div class="projects-grid">
-            <div class="project-card" onclick="openModal('cca')">
-                <div class="project-image">🎓</div>
-                <div class="project-content">
-                    <h3>CCA Portal</h3>
-                    <p>A comprehensive Co-Curricular Activities platform allowing students to learn more about the club, sign up for events, join the club as a member, or reach out for any enquiries.</p>
-                    <div class="project-tags">
-                        <span class="tag">HTML</span>
-                        <span class="tag">CSS</span>
-                    </div>
-                </div>
+        <div class="about-copy">
+          <p>
+            I’m Audwin. I enjoy taking an idea apart, understanding
+            what it needs to do, and turning it into a web experience
+            people can navigate with confidence.
+          </p>
+
+          <p>
+            These projects are a window into what I’m exploring:
+            community platforms, marketplaces, and tools that make
+            conversations easier to manage.
+          </p>
+
+          <div class="skills">
+            <div>
+              <h3>Interface development</h3>
+              <p>
+                HTML · CSS · JavaScript<br>
+                Responsive layouts & interaction
+              </p>
             </div>
-            <div class="project-card" onclick="openModal('whatsapp')">
-                <div class="project-image" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);">💬</div>
-                <div class="project-content">
-                    <h3>connect+ (WhatsApp CRM)</h3>
-                    <p>An intelligent customer relationship management system integrating WhatsApp messaging capabilities with advanced automation, analytics, and secure tunneling for seamless communication.</p>
-                    <div class="project-tags">
-                        <span class="tag">Flask</span>
-                        <span class="tag">Ngrok</span>
-                        <span class="tag">HTML</span>
-                        <span class="tag">SQLite</span>
-                        <span class="tag">CSS</span>
-                    </div>
-                </div>
+
+            <div>
+              <h3>Application development</h3>
+              <p>
+                Python · Flask · SQLite<br>
+                APIs & application workflows
+              </p>
             </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <!-- Project Modals -->
-    <div id="ccaModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('cca')">&times;</span>
-            <h2>CCA Portal</h2>
-            <div class="project-tags" style="margin-bottom: 2rem;">
-                <span class="tag">HTML</span>
-                <span class="tag">CSS</span>
-            </div>
-            <div class="modal-description">
-                <p>The CCA Portal is a comprehensive web-based platform designed to allow prospective students to find out more about the club! This system provides an intuitive interface for users to navigate through easily.</p>
-                <br>
-                <p><strong>Key Features:</strong></p>
-                <ul style="margin-left: 2rem; margin-top: 1rem;">
-                    <li>Detailed club overview with information on activities and achievements</li>
-                    <li>Event listings with easy sign-up for upcoming club activities</li>
-                    <li>Membership registration to join the club directly through the portal</li>
-                    <li>Enquiry form for students to reach out to the club committee</li>
-                    <li>Clean and responsive design for seamless browsing on any device</li>
-                    <li>Intuitive navigation for a smooth user experience</li>
-                </ul>
-            </div>
-            <div class="modal-attachments">
-                <h3>Project Demo & Screenshots</h3>
-                <div class="media-container">
-                     <div class="video-section">
-                      <iframe
-                        src="https://www.youtube.com/embed/_qaYW91XjXI"
-                        title="connect+ demo"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen>
-                      </iframe>
-                    </div>
-                    <div class="screenshots-section">
-                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-homepage.png')">
-                            <img src="images/cca-homepage.png" alt="Homepage" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Homepage%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">Homepage</div>
-                        </div>
-                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-events.png')">
-                            <img src="images/cca-events.png" alt="Events" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Events%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">Events Page</div>
-                        </div>
-                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-membership.png')">
-                            <img src="images/cca-membership.png" alt="Membership" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Join Form%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">Membership Form</div>
-                        </div>
-                        <div class="screenshot-thumb" onclick="openLightbox('images/cca-aboutus.png')">
-                            <img src="images/cca-aboutus.png" alt="About Us" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 About Us%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">About Us Page</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- Contact -->
+      <section
+        id="contact"
+        class="contact"
+        aria-labelledby="contact-title"
+      >
+        <div>
+          <div class="eyebrow">03 / SAY HELLO</div>
+
+          <h2 id="contact-title">
+            Have an idea?<br>
+            Let’s talk about it.
+          </h2>
+
+          <p>
+            For project conversations, opportunities, or a simple hello.
+          </p>
         </div>
-    </div>
 
-    <div id="whatsappModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('whatsapp')">&times;</span>
-            <h2>connect+ (WhatsApp CRM)</h2>
-            <div class="project-tags" style="margin-bottom: 2rem;">
-                <span class="tag">Flask</span>
-                <span class="tag">Ngrok</span>
-                <span class="tag">HTML</span>
-                <span class="tag">SQLite</span>
-                <span class="tag">CSS</span>
-            </div>
-            <div class="modal-description">
-                <p><strong>Problem Statement:</strong></p>
-                <p>Sales representatives in the retail and e-commerce industry face a critical challenge: handling 20-40 repetitive WhatsApp inquiries daily ("What is your address?", "What are your operating hours?"). This consumes significant time, diverts attention from high-value sales conversations, and leads to delayed responses that lower customer satisfaction.</p>
-                <br>
-                <p><strong>Our Solution:</strong></p>
-                <p>connect+ is an intelligent WhatsApp CRM that automates 40-60% of repetitive customer inquiries, dramatically improving response times to under 1 minute for common questions. The system triages and gathers basic customer information before routing to human sales representatives, freeing up 1-2 hours of daily workload for high-value activities like closing deals.</p>
-                <br>
-                <p><strong>Key Features:</strong></p>
-                <ul style="margin-left: 2rem; margin-top: 1rem;">
-                    <li>WhatsApp Business API integration for automated messaging</li>
-                    <li>AI-powered triage system to filter and categorize incoming inquiries</li>
-                    <li>Automated responses for repetitive questions (address, hours, basic product info)</li>
-                    <li>Customer conversation history logging and analytics</li>
-                    <li>Lead scoring based on initial queries to prioritize high-value prospects</li>
-                    <li>Seamless handoff to human sales representatives for complex inquiries</li>
-                    <li>CRM integration to track and manage customer interactions</li>
-                    <li>Secure tunneling with Ngrok for webhook handling</li>
-                    <li>SQLite database for storing customer data and conversation logs</li>
-                </ul>
-                <br>
-                <p><strong>Impact:</strong></p>
-                <p>By automating routine inquiries, sales teams can focus on relationship building and closing deals rather than answering the same questions repeatedly. This leads to improved customer satisfaction through faster responses and increased sales productivity.</p>
-            </div>
-            <div class="modal-attachments">
-                <h3>Project Demo & Screenshots</h3>
-                <div class="media-container">
-                    <div class="video-section">
-                      <iframe
-                        src="https://www.youtube.com/embed/lVf8mwFM9YY"
-                        title="connect+ demo"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen>
-                      </iframe>
-                    </div>
-                    <div class="screenshots-section">
-                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-home.png')">
-                            <img src="images/whatsapp-home.png" alt="Dashboard" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Dashboard%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">CRM Dashboard</div>
-                        </div>
-                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-chat.png')">
-                            <img src="images/whatsapp-chat.png" alt="Chat" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Chat%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">Chat Interface</div>
-                        </div>
-                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-staff.png')">
-                            <img src="images/whatsapp-staff.png" alt="Automation" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Automation%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">Staff Access Management</div>
-                        </div>
-                        <div class="screenshot-thumb" onclick="openLightbox('images/whatsapp-analytics.png')">
-                            <img src="images/whatsapp-analytics.png" alt="Analytics" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%231a1a1a\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300ff88\' font-size=\'24\'%3E📸 Analytics%3C/text%3E%3C/svg%3E'">
-                            <div class="screenshot-label">Analytics Dashboard</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-attachments">
-                <h3>System Architecture & Flow</h3>
-                <div class="attachment-grid">
-                    <div class="attachment-item" style="grid-column: 1 / -1;">
-                        <img src="images/whatsapp-architecture.png" alt="System Architecture" onerror="this.parentElement.innerHTML='<p>📊 System Architecture Diagram<br><br>WhatsApp Business API ↔ Ngrok Tunnel ↔ Flask Backend ↔ SQLite Database<br><br>AI Triage System filters inquiries and routes to automated responses or human sales representatives.</p>'">
-                        <p>System architecture and data flow</p>
-                    </div>
-                    <div class="attachment-item" style="grid-column: 1 / -1;">
-                        <img src="images/whatsapp-userflow.png" alt="User Flow" onerror="this.parentElement.innerHTML='<p>📊 Customer Interaction Flow<br><br>1. Customer sends message → 2. AI analyzes query → 3a. Automated response (simple queries) OR 3b. Route to sales representative (complex queries) → 4. Log in CRM</p>'">
-                        <p>Customer interaction flow diagram</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <a class="button" href="mailto:audwinong@gmail.com">
+          Email me
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </main>
 
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="reveal">
-        <h2>Testimonials</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-text">
-                    "Audwin delivered an exceptional web application that exceeded our expectations. His attention to detail and problem-solving skills are truly impressive."
-                </div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">TL</div>
-                    <div>
-                        <div class="author-name">Thomas Lee</div>
-                        <div class="author-role">Tutor</div>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-text">
-                    "Working with Audwin was a great experience. He brought creative ideas and technical expertise to every challenge we faced during the project."
-                </div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">RO</div>
-                    <div>
-                        <div class="author-name">Richard Ong</div>
-                        <div class="author-role">Project Supervisor</div>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-text">
-                    "Audwin's ability to build clean, responsive interfaces with smooth user experiences is remarkable. A highly dedicated and talented developer."
-                </div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">MK</div>
-                    <div>
-                        <div class="author-name">Michael Koh</div>
-                        <div class="author-role">Classmate & Collaborator</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <footer>
+      <span>© <span id="year">2026</span> Audwin Ong</span>
 
-    <!-- Contact Section -->
-    <section id="contact" class="reveal">
-        <h2>Contact Me</h2>
-        <div class="contact-content">
-            <form class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Send Message</button>
-            </form>
-            <div class="social-links">
-                <a href="https://www.linkedin.com/in/audwinong" target="_blank" title="LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                </a>
-                <a href="mailto:audwinong@gmail.com" title="Email">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-                        <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
+      <a
+        href="https://www.linkedin.com/in/audwinong"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        LinkedIn ↗
+      </a>
 
-    <script>
-        // 3D Globe Animation with Three.js
-        let scene, camera, renderer, globe, particles;
-        let mouseX = 0, mouseY = 0;
-        let targetRotationX = 0, targetRotationY = 0;
+      <a href="#main">Back to top ↑</a>
+    </footer>
+  </div>
 
-        function init3DGlobe() {
-            const container = document.getElementById('globe-container');
-            
-            // Scene setup
-            scene = new THREE.Scene();
-            
-            // Camera setup
-            camera = new THREE.PerspectiveCamera(
-                75,
-                window.innerWidth / window.innerHeight,
-                0.1,
-                1000
-            );
-            camera.position.z = 15;
-            
-            // Renderer setup
-            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setClearColor(0x000000, 0);
-            container.appendChild(renderer.domElement);
-            
-            // Create globe
-            const geometry = new THREE.SphereGeometry(5, 50, 50);
-            
-            // Wireframe material for the globe
-            const wireframeMaterial = new THREE.MeshBasicMaterial({
-                color: 0x00ff88,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.3
-            });
-            
-            globe = new THREE.Mesh(geometry, wireframeMaterial);
-            scene.add(globe);
-            
-            // Create particles around the globe
-            createParticles();
-            
-            // Add ambient light
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            scene.add(ambientLight);
-            
-            // Add point light
-            const pointLight = new THREE.PointLight(0x00ff88, 1, 100);
-            pointLight.position.set(10, 10, 10);
-            scene.add(pointLight);
-            
-            // Mouse move listener
-            document.addEventListener('mousemove', onMouseMove, false);
-            
-            // Start animation
-            animate3D();
-        }
-        
-        function createParticles() {
-            const particlesGeometry = new THREE.BufferGeometry();
-            const particleCount = 1000;
-            const positions = new Float32Array(particleCount * 3);
-            
-            for (let i = 0; i < particleCount * 3; i += 3) {
-                // Create particles in a sphere around the globe
-                const radius = 6 + Math.random() * 4;
-                const theta = Math.random() * Math.PI * 2;
-                const phi = Math.acos((Math.random() * 2) - 1);
-                
-                positions[i] = radius * Math.sin(phi) * Math.cos(theta);
-                positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
-                positions[i + 2] = radius * Math.cos(phi);
-            }
-            
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            
-            const particlesMaterial = new THREE.PointsMaterial({
-                color: 0x00ff88,
-                size: 0.05,
-                transparent: true,
-                opacity: 0.8
-            });
-            
-            particles = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particles);
-        }
-        
-        function onMouseMove(event) {
-            mouseX = (event.clientX - window.innerWidth / 2) / 100;
-            mouseY = (event.clientY - window.innerHeight / 2) / 100;
-        }
-        
-        function animate3D() {
-            requestAnimationFrame(animate3D);
-            
-            // Smooth rotation based on mouse position
-            targetRotationX = mouseY * 0.5;
-            targetRotationY = mouseX * 0.5;
-            
-            // Auto-rotate slowly
-            globe.rotation.y += 0.001;
-            particles.rotation.y += 0.0005;
-            
-            // Apply mouse-based rotation smoothly
-            globe.rotation.x += (targetRotationX - globe.rotation.x) * 0.05;
-            globe.rotation.y += (targetRotationY - globe.rotation.y) * 0.05;
-            
-            particles.rotation.x += (targetRotationX - particles.rotation.x) * 0.03;
-            particles.rotation.y += (targetRotationY - particles.rotation.y) * 0.03;
-            
-            renderer.render(scene, camera);
-        }
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        // Initialize globe when page loads
-        window.addEventListener('load', () => {
-            init3DGlobe();
-            
-            // Hide loading screen
-            setTimeout(() => {
-                document.querySelector('.loading-screen').classList.add('hidden');
-            }, 1000);
+  <!-- Project details -->
+  <dialog
+    id="project-dialog"
+    aria-labelledby="dialog-title"
+    aria-describedby="dialog-copy dialog-note"
+  >
+    <span class="section-number">PROJECT NOTES</span>
+    <h2 id="dialog-title"></h2>
+    <p id="dialog-copy"></p>
+    <p id="dialog-note" class="dialog-note"></p>
 
-            // Start typing effect
-            setTimeout(() => {
-                typeWriter();
-            }, 1500);
-        });
+    <form method="dialog">
+      <button class="button" autofocus>
+        Close project notes
+        <span aria-hidden="true">×</span>
+      </button>
+    </form>
+  </dialog>
 
-        // Typing effect for subtitle
-        const textToType = "Full Stack Developer & Creative Designer";
-        let charIndex = 0;
-        
-        function typeWriter() {
-            const typedElement = document.getElementById('typed-text');
-            if (charIndex < textToType.length) {
-                typedElement.textContent += textToType.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 80); // Speed of typing
-            } else {
-                // Remove cursor after typing is done
-                setTimeout(() => {
-                    typedElement.style.borderRight = 'none';
-                }, 500);
-            }
-        }
+  <script>
+    const projects = {
+      vault: {
+        title: "ArcaneVault",
+        copy:
+          "A marketplace project inspired by Carousell: a place for " +
+          "people to discover, buy, and sell pre-loved items. The name " +
+          "ArcaneVault gives the project its own identity, with the idea " +
+          "of discovering something worth keeping.",
+        note:
+          "The preview on this portfolio is an illustrative design " +
+          "concept. It does not represent an actual screenshot or " +
+          "a confirmed feature list of the application."
+      },
 
-        // Scroll progress bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.querySelector('.progress-bar').style.width = scrolled + '%';
+      cca: {
+        title: "CCA Portal",
+        copy:
+          "A web-based Co-Curricular Activities portal designed to help " +
+          "students learn about a club, explore events, sign up, become " +
+          "a member, and send enquiries. The project brings these " +
+          "journeys together in a focused interface.",
+        note:
+          "Technologies from the original portfolio: HTML and CSS. " +
+          "The preview is an illustrative interface rather than " +
+          "a project screenshot."
+      },
 
-            // Back to top button
-            const backToTop = document.querySelector('.back-to-top');
-            if (winScroll > 500) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
+      crm: {
+        title: "connect+",
+        copy:
+          "A WhatsApp customer relationship management project built " +
+          "around messaging and enquiry workflows. The project uses " +
+          "a Flask backend, SQLite database, WhatsApp Business API " +
+          "integration, and an Ngrok tunnel to explore automated " +
+          "handling and routing to a human representative.",
+        note:
+          "The preview uses example conversations and an illustrative " +
+          "interface. No measured customer results or performance " +
+          "improvements are claimed."
+      }
+    };
 
-        // Back to top click
-        document.querySelector('.back-to-top').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+    const dialog = document.getElementById("project-dialog");
+    const dialogTitle = document.getElementById("dialog-title");
+    const dialogCopy = document.getElementById("dialog-copy");
+    const dialogNote = document.getElementById("dialog-note");
 
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
+    let lastProjectButton = null;
 
-        // Scroll reveal animation
-        const reveals = document.querySelectorAll('.reveal');
+    document.querySelectorAll("[data-project]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const project = projects[button.dataset.project];
 
-        function checkReveal() {
-            reveals.forEach(element => {
-                const windowHeight = window.innerHeight;
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
+        if (!project) return;
 
-                if (elementTop < windowHeight - elementVisible) {
-                    element.classList.add('active');
-                    
-                    // Trigger stat counter animation when stats section is visible
-                    if (element.classList.contains('stats-section') && !element.dataset.animated) {
-                        element.dataset.animated = 'true';
-                        animateCounters();
-                    }
-                }
-            });
-        }
+        lastProjectButton = button;
 
-        // Animated number counter
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-number');
-            
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const duration = 2000; // 2 seconds
-                const increment = target / (duration / 16); // 60fps
-                let current = 0;
-                
-                const updateCounter = () => {
-                    current += increment;
-                    if (current < target) {
-                        counter.textContent = Math.floor(current);
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        counter.textContent = target + '+';
-                    }
-                };
-                
-                updateCounter();
-            });
-        }
+        dialogTitle.textContent = project.title;
+        dialogCopy.textContent = project.copy;
+        dialogNote.textContent = project.note;
 
-        window.addEventListener('scroll', checkReveal);
-        checkReveal();
+        dialog.showModal();
+        document.body.classList.add("modal-open");
+      });
+    });
 
-        // Form submission
-        document.querySelector('.contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            createParticleExplosion(e.clientX, e.clientY);
-            setTimeout(() => {
-                alert('Thank you for reaching out to me, I endeavour to reply as soon as possible.');
-                // Clear the form
-                e.target.reset();
-            }, 500);
-        });
+    // Close when clicking outside the dialog.
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
 
-        // Particle explosion effect
-        function createParticleExplosion(x, y) {
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const angle = (Math.PI * 2 * i) / 30;
-                const velocity = 100 + Math.random() * 100;
-                const tx = Math.cos(angle) * velocity;
-                const ty = Math.sin(angle) * velocity;
-                
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-                particle.style.setProperty('--tx', tx + 'px');
-                particle.style.setProperty('--ty', ty + 'px');
-                
-                document.body.appendChild(particle);
-                
-                setTimeout(() => particle.remove(), 1000);
-            }
-        }
+      const bounds = dialog.getBoundingClientRect();
 
-        // Add particle explosion to project cards
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                const rect = card.getBoundingClientRect();
-                createParticleExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
-            });
-        });
+      const clickedOutside =
+        event.clientX < bounds.left ||
+        event.clientX > bounds.right ||
+        event.clientY < bounds.top ||
+        event.clientY > bounds.bottom;
 
-        // Add particle explosion to CTA buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                if (!e.target.closest('form')) {
-                    const rect = btn.getBoundingClientRect();
-                    createParticleExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
-                }
-            });
-        });
+      if (clickedOutside) {
+        dialog.close();
+      }
+    });
 
-        // Modal functions
-        function openModal(projectType) {
-            const modal = document.getElementById(projectType + 'Modal');
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
+    // Restore scrolling and focus after closing.
+    dialog.addEventListener("close", () => {
+      document.body.classList.remove("modal-open");
 
-        function closeModal(projectType) {
-            const modal = document.getElementById(projectType + 'Modal');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
+      if (lastProjectButton) {
+        lastProjectButton.focus();
+      }
+    });
 
-        // Lightbox functions
-        function openLightbox(imageSrc) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = imageSrc;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-    </script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
 </body>
 </html>
